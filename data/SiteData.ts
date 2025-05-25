@@ -7,6 +7,7 @@ export const Paths: PathsType[] = [
     { path: '/', name: 'home' },
     { path: '/tutorials', name: 'tutorials' },
     { path: 'contact', name: 'contact' },
+    // { path: '/testing', name: 'testing' },
 ]
 
 export const HomeHeroData = {
@@ -50,7 +51,14 @@ export const ProjectData = [
         detail: "Libero penatibus erat senectus tellus tincidunt mi duis lobortis taciti, magna quisque euismod condimentum fermentum justo aenean convallis, proin dignissim sociosqu suspendisse nisi ridiculus sagittis diam. Convallis neque mus ad semper nam luctus augue morbi, facilisi cras iaculis platea rutrum parturient varius, magna ac posuere porttitor condimentum dapibus purus.",
         desktop: "/images/temporary/temp-003.jpg",
         mobile: "/images/temporary/temp-004.jpg",
-    }
+    },
+    {
+        header: "TRIPHARY",
+        subHeader: "Travel App",
+        detail: "Libero penatibus erat senectus tellus tincidunt mi duis lobortis taciti, magna quisque euismod condimentum fermentum justo aenean convallis, proin dignissim sociosqu suspendisse nisi ridiculus sagittis diam. Convallis neque mus ad semper nam luctus augue morbi, facilisi cras iaculis platea rutrum parturient varius, magna ac posuere porttitor condimentum dapibus purus.",
+        desktop: "/images/temporary/temp-003.jpg",
+        mobile: "/images/temporary/temp-004.jpg",
+    },
 ]
 
 export const CredentialData = [

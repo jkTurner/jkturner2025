@@ -9,7 +9,7 @@ const Projects = () => {
             <div className="flex flex-col gap-md w-full max-w-[var(--desktop)] mx-auto px-md py-2xl">
 
                 {/* Project Menu */}
-                <div id="project menu" className="flex w-full justify-between items-center">
+                <div id="project menu" className="flex w-full justify-between items-center mb-sm">
                     <h2 className="text-[var(--accent)] font-bold text-sm">Projects</h2>
                     <div className="w-[200px] h-[16px] bg-accent" />
                 </div>
