@@ -1,0 +1,10 @@
+.navItem {
+    border-right: 1px solid var(--accent);
+    padding: 0 24px;
+}
+.navItem:last-child {
+    border: none;
+}
+.navItem:first-child {
+    padding-left: 0;
+}

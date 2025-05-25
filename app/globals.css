@@ -1,8 +1,44 @@
 @import "tailwindcss";
 
+@theme {
+	--color-background: #1B1B1C;
+	--color-foreground: #E8E8E8;
+	--color-accent: #B1E7E4;
+	--color-textLight: #A6A6A6;
+	--color-mute: #424242;
+	--color-backgroundOverlay: #131314;
+	--color-surface: #222222;
+
+	--text-micro: 13px;
+	--text-xs: 15px;
+	--text-sm: 16px;
+	--text-md: 20px;
+	--text-lg: 24px;
+	--text-xl: 32px;
+	--text-2xl: 40px;
+	--text-hero: 80px;
+
+	--spacing-xs: 8px;
+	--spacing-sm: 16px;
+	--spacing-md: 24px;
+	--spacing-lg: 32px;
+	--spacing-xl: 40px;
+	--spacing-2xl: 80px;
+
+	--breakpoint-desktop: 1280px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #1B1B1C;
+	--foreground: #E8E8E8;
+	--accent: #B1E7E4;
+	--accent-60: #B1E7E499;
+	--textLight: #A6A6A6;
+	--mute: #424242;
+	--backgroundOverlay: #131314;
+	--surface: #222222;
+
+	--desktop: 1280px;
 }
 
 @theme inline {
@@ -13,14 +49,135 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+	:root {
+		--background: #1B1B1C;
+		--foreground: #E8E8E8;
+		--accent: #B1E7E4;
+		--textLight: #A6A6A6;
+		--mute: #424242;
+		--backgroundOverlay: #131314;
+		--surface: #222222;
+	}
+}
+
+@layer base {	
+	body {
+	  background: var(--background);
+	  color: var(--foreground);
+	  font-family: sans-serif;
+	  font-size: var(--text-sm);
+	  font-weight: 300;
+	}
+	h1 {
+		font-size: var(--text-lg);
+	}
+	.mainLayout {
+		width: 100%;
+		margin-inline: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.nextImage {
+		object-fit: cover;
+		overflow: hidden;
+		overflow-clip-margin: unset;
+	}
+	.gridSoftSkills {
+		width: 100%;
+		max-width: var(--desktop);
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: var(--spacing-md);
+	}
+}
+
+.grid4Container {
+	width: 100%;
+	max-width: var(--desktop);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: var(--spacing-md);
+}
+
+/* effects */
+.gradientWipe {
+	opacity: 0;
+	animation: wipeEffect 0.8s ease forwards;
+	animation-delay: 0.3s;
+}
+@keyframes wipeEffect {
+	from {
+		opacity: 0;
+		background-image: linear-gradient(45deg, red, blue);
+	}
+	to {
+		opacity: 1;
+		background-image: linear-gradient(45deg, blue, red);
+	}
+}
+
+.aGradient {
+  background: linear-gradient(270deg, var(--surface), var(--accent));
+  background-size: 600% 600%;
+  animation: gradientShift 10s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  /* 50% { background-position: 100% 50%; } */
+  100% { background-position: 50% 0%; }
+}
+
+/* -------------------- */
+.revealGradient {
+  position: relative;
+  color: var(--foreground); 
+  overflow: hidden;
+  background-color: var(--surface);
+  z-index: -2;
+}
+
+.revealGradient::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, var(--surface), var(--accent-60));
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: -1; 
+  
+	animation: reveal 2s forwards, fadeOut 1s calc(var(--reveal-delay, 0s) + 1.5s) forwards;
+  	animation-delay: var(--reveal-delay, 0s), calc(var(--reveal-delay, 0s) + 1.5s);
+}
+
+@keyframes reveal {
+  to {
+    transform: scaleX(1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Embla Carousel */
+.embla__viewport {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.embla__slide {
+  flex: 0 0 100%;
+  /* min-width: 0; */
+  /* height: 100%; */
+  min-height: 0;
+  position: relative;
 }
