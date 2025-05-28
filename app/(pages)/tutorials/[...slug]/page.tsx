@@ -3,6 +3,10 @@ import path from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import Testing from '@/app/components/mdx/Testing';
 import MainTag from '@/app/components/ui/buttons/MainTag';
+import ErrorBlock from '@/app/components/mdx/ErrorBlock';
+import ListBlock from '@/app/components/mdx/ListBlock';
+import CodeBlock from '@/app/components/mdx/CodeBlock';
+import ReasonBlock from '@/app/components/mdx/ReasonBlock';
 
 
 export default async function TutorialPostPage(props: {
@@ -23,6 +27,10 @@ export default async function TutorialPostPage(props: {
         },
         components: {
             Testing,
+            ErrorBlock,
+            ListBlock,
+            CodeBlock,
+            ReasonBlock,
         }
     })
 
@@ -41,6 +49,8 @@ export default async function TutorialPostPage(props: {
                     <MainTag key={tech} name={tech} />
                 ))}
             </div>
+
+            {/* Test Component */}
 
             {/* Content */}
             <div className="w-full text-[var(--textLight)] text-xs">

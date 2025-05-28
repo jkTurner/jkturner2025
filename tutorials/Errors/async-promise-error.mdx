@@ -6,6 +6,32 @@ author: "Jakkrit Turner"
 techUsed: ["Next.js 15"]
 ---
 
-import Testing from '@/app/components/mdx/Testing';
+<ErrorBlock error="Type error: Type '{ params: { slug: string[]; }; }' does not satisfy the constraint 'PageProps'." />
+<br/>
 
-<h4>comming soon</h4>
+<ReasonBlock detail="The error occurs because in Next.js 15+, params and searchParams are now Promise objects in async page components.
+This means you can no longer destructure them directly — you must await them first." />
+<br/>
+
+From NExt.js 15 onward, if your page.tsx is async, then params and searchParams are now Promises.
+<br/>
+<ListBlock header="You must:" listItems={["Accept them as Promises", "await them before using"]} />
+<br/>
+
+This will break in Next.js 15 when used in an async function.
+<br/>
+<CodeBlock filename="before (old method)" lang='tsx' code="export default async function TutorialPostPage({ params }: { params: { slug: string[] }}) {}" />
+<br/>
+
+Solution
+<br/>
+<CodeBlock 
+    filename="Next.js 15" 
+    lang="tsx"
+    code={`export default async function TutorialPostPage(props: {
+    params: Promise<{ slug: string[] }>;
+}) {
+    const { slug } = await props.params;
+    //...remaining code
+}`}
+/>
