@@ -9,7 +9,29 @@ type Props = {
 
 const TutorialMenu = ({ groupedTutorials }: Props ) => {
 
-    const sortedCategories = Object.keys(groupedTutorials).sort();
+    const categoryOrder = [
+        'dev-steps',
+        'react-essentials',
+        'react-ecosystem',
+        'state-management',
+        'tips',
+        'errors' // always last
+    ];
+
+    // const sortedCategories = Object.keys(groupedTutorials).sort();
+    
+    const sortedCategories = Object.keys(groupedTutorials).sort((a, b) => {
+    const indexA = categoryOrder.indexOf(a.toLowerCase());
+    const indexB = categoryOrder.indexOf(b.toLowerCase());
+
+    // Push unknown categories to the end
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+
+    return indexA - indexB;
+    });
+
     const pathname = usePathname();
 
     return (
