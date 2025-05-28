@@ -1,35 +1,43 @@
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+type Props = {
+  groupedTutorials: Record<string, { slug: string; title: string }[]>;
+};
 
 
-const TutorialMenu = () => {
+const TutorialMenu = ({ groupedTutorials }: Props ) => {
+
+    const sortedCategories = Object.keys(groupedTutorials).sort();
+    const pathname = usePathname();
+
     return (
-        <div className="flex flex-col w-full max-w-[280px]">
-            <div className="flex flex-col gap-xs border-b-1 border-[var(--mute)] py-sm">
-                <h2 className="font-bold">Dev Steps</h2>
-                <h3 className="text-xs text-[var(--textLight)]">Overview</h3>
-            </div>
-            <div className="flex flex-col gap-xs border-b-1 border-[var(--mute)] py-sm">
-                <h2 className="font-bold">REACT ESSENTIALS</h2>
-                <h3 className="text-xs text-[var(--textLight)]">useState fundamental</h3>
-                <h3 className="text-xs text-[var(--textLight)]">useEffect fundamental</h3>
-                <h3 className="text-xs text-[var(--textLight)]">React props fundamental</h3>
-                <h3 className="text-xs text-[var(--textLight)]">Styling fundamental</h3>
-            </div>
-            <div className="flex flex-col gap-xs border-b-1 border-[var(--mute)] py-sm">
-                <h2 className="font-bold">REACT ECOSYSTEM</h2>
-                <h3 className="text-xs text-[var(--textLight)]">Zustand Basics: Global state with minimal boilerplate</h3>
-                <h3 className="text-xs text-[var(--textLight)]">Managing async state with React Query</h3>
-                <h3 className="text-xs text-[var(--textLight)]">Animate React components with Framer Motion</h3>
-            </div>
-            <div className="flex flex-col gap-xs border-b-1 border-[var(--mute)] py-sm">
-                <h2 className="font-bold">STATE MANAGEMENT</h2>
-                <h3 className="text-xs text-[var(--textLight)]">Global State with Zustand</h3>
-                <h3 className="text-xs text-[var(--textLight)]">When to use context vs Zustand</h3>
-                <h3 className="text-xs text-[var(--textLight)]">Persisting Zustand state with middleware</h3>
-            </div>
-            <div className="flex flex-col gap-xs border-b-1 border-[var(--mute)] py-sm">
-                <h2 className="font-bold">Tips</h2>
-                <h3 className="text-xs text-[var(--textLight)]">Building custom 404 pages in Next.js</h3>
-            </div>
+        <div className="flex flex-col w-full max-w-[260px]">
+            {sortedCategories.map((category) => (
+                <div key={category} className="mb-6">
+                <h4 className="font-bold uppercase text-sm mb-2">
+                    {category.replace(/-/g, ' ')}
+                </h4>
+                <ul className="space-y-1 text-sm">
+                    {groupedTutorials[category].map((tutorial) => (
+                    <li
+                        key={tutorial.slug}
+                        className={`text-xs hover:text-[var(--foreground)] ${
+                            pathname === `/tutorials/${tutorial.slug}`
+                            ? 'text-[var(--accent)]'
+                            : 'text-[var(--textLight)]'
+                        }`}
+                        >
+                        <Link href={`/tutorials/${tutorial.slug}`}>
+                        {tutorial.title}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+                <hr className="mt-4 border-neutral-700" />
+                </div>
+            ))}
         </div>
     )
 }

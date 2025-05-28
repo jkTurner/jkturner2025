@@ -6,7 +6,7 @@ type PathsType = {
 export const Paths: PathsType[] = [
     { path: '/', name: 'home' },
     { path: '/tutorials', name: 'tutorials' },
-    { path: 'contact', name: 'contact' },
+    { path: '/contact', name: 'contact' },
     // { path: '/testing', name: 'testing' },
 ]
 
