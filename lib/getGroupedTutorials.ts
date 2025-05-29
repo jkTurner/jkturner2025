@@ -1,48 +1,115 @@
-import fg from 'fast-glob'
-// import path from 'path'
-import { readFile } from 'fs/promises'
-import { compileMDX } from 'next-mdx-remote/rsc'
+import fg from 'fast-glob';
+import { readFile } from 'fs/promises';
+import { evaluate } from 'next-mdx-remote-client/rsc';
 
 type TutorialMeta = {
-    title: string;
+  title: string;
 };
 
 export async function getGroupedTutorials() {
-    const entries = await fg(['tutorials/**/*.mdx']);
+  const entries = await fg(['tutorials/**/*.mdx']);
 
-    const tutorials = await Promise.all(entries.map(async (entry) => {
-        const content = await readFile(entry, 'utf8');
+  const tutorials = await Promise.all(entries.map(async (entry) => {
+    const content = await readFile(entry, 'utf8');
 
-        const { frontmatter } = await compileMDX<TutorialMeta>({
-            source: content,
-            options: { parseFrontmatter: true },
-        });
+    const { frontmatter } = await evaluate<TutorialMeta>({
+      source: content,
+      options: { parseFrontmatter: true },
+    });
 
-        const slug = entry
-            .replace(/^tutorials\//, '')
-            .replace(/\.mdx$/, '')
-            .replace(/\\/g, '/');
+    const slug = entry
+      .replace(/^tutorials\//, '')
+      .replace(/\.mdx$/, '')
+      .replace(/\\/g, '/');
 
-        const category = slug.split('/')[0];
+    const [category, maybeSubcategory, ...rest] = slug.split('/');
+    const subcategory = rest.length > 0 ? maybeSubcategory : '__root';
 
-        return {
-            slug,
-            category,
-            title: frontmatter.title,
-        };
-    }));
+    return {
+      slug,
+      category,
+      subcategory,
+      title: frontmatter.title,
+    };
+  }));
 
-    const grouped: Record<string, {slug: string; title: string }[]> = {};
+	const grouped: Record<
+	string,
+	Record<string, { slug: string; title: string }[]>
+	> = {};
 
-    for (const tutorial of tutorials) {
-        if (!grouped[tutorial.category]) {
-            grouped[tutorial.category] = [];
-        }
-        grouped[tutorial.category].push({
-            slug: tutorial.slug,
-            title: tutorial.title,
-        });
+  for (const tutorial of tutorials) {
+    const { category, subcategory, title, slug } = tutorial;
+
+    if (!grouped[category]) {
+      grouped[category] = {};
     }
 
-    return grouped;
+    if (!grouped[category][subcategory]) {
+      grouped[category][subcategory] = [];
+    }
+
+    grouped[category][subcategory].push({ title, slug });
+  }
+
+  return grouped;
 }
+
+
+
+
+
+// import fg from 'fast-glob';
+// import { readFile } from 'fs/promises';
+// import { evaluate } from 'next-mdx-remote-client/rsc';
+
+// type TutorialMeta = {
+//   	title: string;
+// };
+
+// export async function getGroupedTutorials() {
+// 	const entries = await fg(['tutorials/**/*.mdx']);
+
+// 	const tutorials = await Promise.all(entries.map(async (entry) => {
+// 		const content = await readFile(entry, 'utf8');
+
+// 		const { frontmatter } = await evaluate<TutorialMeta>({
+// 		source: content,
+// 		options: {
+// 			parseFrontmatter: true,
+// 		},
+// 		});
+
+// 		const slug = entry
+// 		.replace(/^tutorials\//, '')
+// 		.replace(/\.mdx$/, '')
+// 		.replace(/\\/g, '/');
+
+// 		const category = slug.split('/')[0];
+
+// 		return {
+// 		slug,
+// 		category,
+// 		title: frontmatter.title,
+// 		};
+// 	}));
+
+// 	const grouped: Record<string, { slug: string; title: string }[]> = {};
+
+// 	for (const tutorial of tutorials) {
+// 		if (!grouped[tutorial.category]) {
+// 		grouped[tutorial.category] = [];
+// 		}
+// 		grouped[tutorial.category].push({
+// 		slug: tutorial.slug,
+// 		title: tutorial.title,
+// 		});
+// 	}
+
+// 	return grouped;
+// }
+
+
+
+
+

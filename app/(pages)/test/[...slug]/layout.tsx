@@ -12,18 +12,18 @@ interface TutorialsLayoutProps {
     children: ReactNode;
 }
 
-const TutorialsLayout: React.FC<TutorialsLayoutProps> = async ({ children }) => {
+const TestLayout: React.FC<TutorialsLayoutProps> = async ({ children }) => {
 
     const groupedTutorials = await getGroupedTutorials();
 
     return (
-        <div className="flex w-full mx-auto max-w-[var(--desktop)] px-md gap-2xl mt-lg min-h-[80vh]">
+        <div className="flex w-full max-w-[var(--desktop)] px-md gap-2xl mt-lg">
             <TutorialMenu groupedTutorials={groupedTutorials} />
-            <div className="flex-1 min-w-0 text-xs text-[var(--textLight)]">
+            <div className="flex-1">
                 {children}
             </div>
         </div>
     )
 }
 
-export default TutorialsLayout;
+export default TestLayout;

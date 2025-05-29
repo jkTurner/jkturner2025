@@ -8,7 +8,7 @@ const ListBlock = ({ header, listItems }: ListBlockProps) => {
     return (
         <div className="flex flex-col gap-xs">
             {header && (
-                <h4>{header}</h4>
+                <h4 className="text-[var(--foreground)]">{header}</h4>
             )}
             <ul>
                 {Array.isArray(listItems) &&

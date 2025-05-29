@@ -1,5 +1,5 @@
 ---
-title: "async page params and searchParams"
+title: "Next.js 15 async page params – TypeError fix"
 description: "The overview of Dev Steps Tutorials"
 date: "2025-05-26"
 author: "Jakkrit Turner"
@@ -15,23 +15,29 @@ This means you can no longer destructure them directly — you must await them f
 
 From NExt.js 15 onward, if your page.tsx is async, then params and searchParams are now Promises.
 <br/>
-<ListBlock header="You must:" listItems={["Accept them as Promises", "await them before using"]} />
+<ListBlock header="You must:" listItems={["Accept them as Promises", "Await them before using"]} />
 <br/>
 
 This will break in Next.js 15 when used in an async function.
 <br/>
-<CodeBlock filename="before (old method)" lang='tsx' code="export default async function TutorialPostPage({ params }: { params: { slug: string[] }}) {}" />
+<CodeBlock>
+```tsx
+export default async function Page({ params }: { params: { slug: string[] }}) {}
+```
+</CodeBlock>
 <br/>
 
 Solution
 <br/>
-<CodeBlock 
-    filename="Next.js 15" 
-    lang="tsx"
-    code={`export default async function TutorialPostPage(props: {
+
+<CodeBlock title="Next.js 15">
+```tsx
+export default async function Page(props: {
     params: Promise<{ slug: string[] }>;
 }) {
     const { slug } = await props.params;
     //...remaining code
-}`}
-/>
+}
+```
+</CodeBlock>
+<br/>

@@ -1,63 +1,66 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { compileMDX } from 'next-mdx-remote/rsc';
-import Testing from '@/app/components/mdx/Testing';
+import { Suspense } from 'react';
+import { evaluate, MDXRemote, type MDXRemoteOptions } from 'next-mdx-remote-client/rsc';
+import remarkGfm from 'remark-gfm';
+import rehypePrettyCode from 'rehype-pretty-code';
+import { useMDXComponents } from '@/mdx-components';
 import MainTag from '@/app/components/ui/buttons/MainTag';
-import ErrorBlock from '@/app/components/mdx/ErrorBlock';
-import ListBlock from '@/app/components/mdx/ListBlock';
-import CodeBlock from '@/app/components/mdx/CodeBlock';
-import ReasonBlock from '@/app/components/mdx/ReasonBlock';
 
+type Frontmatter = {
+    title: string;
+    techUsed?: string[];
+}
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+const components = useMDXComponents({});
 
 export default async function TutorialPostPage(props: {
-    params: Promise<{ slug: string[] }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-
-    const { slug } = await props.params;
-    const slugPath = slug.join('/');
-    const tutorial = await fs.readFile(
-        path.join(process.cwd(), 'tutorials', `${slugPath}.mdx`), 
+        const { slug } = await props.params;
+        const slugPath = slug.join('/');
+        const source = await fs.readFile(
+        path.join(process.cwd(), 'tutorials', `${slugPath}.mdx`),
         'utf8'
     );
 
-    const data = await compileMDX<{ title: string, techUsed?: string[] }>({
-        source: tutorial,
-        options: {
-            parseFrontmatter: true
+    const options: MDXRemoteOptions = {
+        mdxOptions: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [[rehypePrettyCode, { theme: 'catppuccin-frappe' }]],
         },
-        components: {
-            Testing,
-            ErrorBlock,
-            ListBlock,
-            CodeBlock,
-            ReasonBlock,
-        }
+        parseFrontmatter: true,
+    };
+
+    const { frontmatter } = await evaluate<Frontmatter>({
+        source,
+        options,
     })
 
-    console.log("data: ", data)
-
     return (
-        <div className="flex flex-col w-full gap-sm">
-            {/* Title */}
-            <h1 className="text-lg">{data.frontmatter.title}</h1>
-            <div className="border-b-1 border-[var(--mute)] w-full" />
-            {data.frontmatter.techUsed && (
-                <span>Used in this guide:</span>
+        <div className="flex flex-col w-full">
+            <h1 className="text-lg text-[var(--foreground)]">{frontmatter.title}</h1>
+            <div className="border-b-1 border-[var(--mute)] w-full my-sm" />
+
+            {frontmatter.techUsed && (
+                <span className="text-xs text-[var(--foreground)]">Used in this guide:</span>
             )}
-            <div className="flex gap-xs">
-                {data.frontmatter.techUsed?.map((tech) => (
+            <div className="flex gap-xs my-sm">
+                {frontmatter.techUsed?.map((tech) => (
                     <MainTag key={tech} name={tech} />
                 ))}
             </div>
 
-            {/* Test Component */}
-
-            {/* Content */}
-            <div className="w-full text-[var(--textLight)] text-xs">
-                {data.content}
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <MDXRemote
+                    source={source}
+                    options={options}
+                    components={components}
+                />
+            </Suspense>
         </div>
-    )
+    );
 }
 
 
@@ -68,11 +71,18 @@ export default async function TutorialPostPage(props: {
 // import { compileMDX } from 'next-mdx-remote/rsc';
 // import Testing from '@/app/components/mdx/Testing';
 // import MainTag from '@/app/components/ui/buttons/MainTag';
+// import ErrorBlock from '@/app/components/mdx/ErrorBlock';
+// import ListBlock from '@/app/components/mdx/ListBlock';
+// import CodeBlock from '@/app/components/mdx/CodeBlock';
+// import ReasonBlock from '@/app/components/mdx/ReasonBlock';
 
 
-// export default async function TutorialPostPage({ params }: { params: { slug: string[] }}) {
+// export default async function TutorialPostPage(props: {
+//     params: Promise<{ slug: string[] }>;
+// }) {
 
-//     const slugPath = params.slug.join('/');
+//     const { slug } = await props.params;
+//     const slugPath = slug.join('/');
 //     const tutorial = await fs.readFile(
 //         path.join(process.cwd(), 'tutorials', `${slugPath}.mdx`), 
 //         'utf8'
@@ -85,6 +95,10 @@ export default async function TutorialPostPage(props: {
 //         },
 //         components: {
 //             Testing,
+//             ErrorBlock,
+//             ListBlock,
+//             CodeBlock,
+//             ReasonBlock,
 //         }
 //     })
 
@@ -104,6 +118,8 @@ export default async function TutorialPostPage(props: {
 //                 ))}
 //             </div>
 
+//             {/* Test Component */}
+
 //             {/* Content */}
 //             <div className="w-full text-[var(--textLight)] text-xs">
 //                 {data.content}
@@ -111,7 +127,3 @@ export default async function TutorialPostPage(props: {
 //         </div>
 //     )
 // }
-
-
-
-
