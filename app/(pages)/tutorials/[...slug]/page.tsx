@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { evaluate, MDXRemote, type MDXRemoteOptions } from 'next-mdx-remote-client/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
-import { useMDXComponents } from '@/mdx-components';
+import { useMDXComponents as getMDXComponents } from '@/mdx-components';
 import MainTag from '@/app/components/ui/buttons/MainTag';
 
 type Frontmatter = {
@@ -13,7 +13,7 @@ type Frontmatter = {
 }
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
-const components = useMDXComponents({});
+const components = getMDXComponents({});
 
 export default async function TutorialPostPage(props: {
   params: Promise<{ slug: string[] }>;
