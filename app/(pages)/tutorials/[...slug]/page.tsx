@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { evaluate, MDXRemote, type MDXRemoteOptions } from 'next-mdx-remote-client/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
-import { useMDXComponents as getMDXComponents } from '@/mdx-components';
+import {  getMDXComponents } from '@/mdx-components';
 import MainTag from '@/app/components/ui/buttons/MainTag';
 
 type Frontmatter = {

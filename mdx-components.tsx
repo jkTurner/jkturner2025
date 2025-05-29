@@ -5,7 +5,7 @@ import ErrorBlock from './app/components/mdx/ErrorBlock'
 import ListBlock from './app/components/mdx/ListBlock'
 import ReasonBlock from './app/components/mdx/ReasonBlock'
  
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+export function getMDXComponents(components: MDXComponents): MDXComponents {
     return {
         pre: (props) => {
             return (
@@ -23,6 +23,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     }
 }
 
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return getMDXComponents(components);
+}
 
 
 
