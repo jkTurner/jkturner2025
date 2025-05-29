@@ -127,7 +127,7 @@ return (
           })}
         </ul>
 
-        <hr className="mt-4 border-neutral-700" />
+        <hr className="mt-md border-neutral-700" />
       </div>
     ))}
   </div>
