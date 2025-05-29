@@ -12,7 +12,6 @@ type Frontmatter = {
     techUsed?: string[];
 }
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
 const components = getMDXComponents({});
 
 export default async function TutorialPostPage(props: {
