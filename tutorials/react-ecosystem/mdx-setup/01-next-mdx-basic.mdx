@@ -26,7 +26,6 @@ In this guide, we’ll set up a modern MDX-powered documentation or blog system 
     listItems={[
         "The project does not use the /src folder structure.",
         "The code examples are written in TypeScript.",
-        "I am using Tailwind CSS for styling (though not strictly required for Shiki).",
     ]}
 />
 <br/>
@@ -128,7 +127,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 root
 ├── app
     ├── (pages)
-        ├── page.mdx
+        ├── test
+            ├── page.mdx
 ```
 </CodeBlock>
 <br/>
@@ -164,8 +164,9 @@ Add a Layout Wrapper with prose styling by default, Tailwind’s prose class won
 root
 ├── app
     ├── (pages)
-        ├── page.mdx
-        ├── layout.tsx
+        ├── test
+            ├── page.mdx
+            ├── layout.tsx
 ```
 </CodeBlock>
 <br/>
