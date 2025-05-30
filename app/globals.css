@@ -5,10 +5,13 @@
 	--color-background: #1B1B1C;
 	--color-foreground: #E8E8E8;
 	--color-accent: #B1E7E4;
+	--color-accentMute: #82c9c5;
 	--color-textLight: #A6A6A6;
 	--color-mute: #424242;
 	--color-backgroundOverlay: #131314;
 	--color-surface: #222222;
+	--color-backgroundCode: #313445;
+	--color-code: #C9D0F3;
 
 	--text-micro: 13px;
 	--text-xxs: 14px;
@@ -34,11 +37,14 @@
 	--background: #1B1B1C;
 	--foreground: #E8E8E8;
 	--accent: #B1E7E4;
+	--accentMute: #82c9c5;
 	--accent-60: #B1E7E499;
 	--textLight: #A6A6A6;
 	--mute: #424242;
 	--backgroundOverlay: #131314;
 	--surface: #222222;
+	--backgroundCode: #313445;
+	--code: #C9D0F3;
 
 	--desktop: 1280px;
 }
@@ -55,10 +61,13 @@
 		--background: #1B1B1C;
 		--foreground: #E8E8E8;
 		--accent: #B1E7E4;
+		--accentMute: #82c9c5;
 		--textLight: #A6A6A6;
 		--mute: #424242;
 		--backgroundOverlay: #131314;
 		--surface: #222222;
+		--backgroundCode: #313445;
+		--code: #C9D0F3;
 	}
 }
 

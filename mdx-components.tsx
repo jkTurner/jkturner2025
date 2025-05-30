@@ -4,6 +4,10 @@ import CodeBlock from './app/components/mdx/CodeBlock'
 import ErrorBlock from './app/components/mdx/ErrorBlock'
 import ListBlock from './app/components/mdx/ListBlock'
 import ReasonBlock from './app/components/mdx/ReasonBlock'
+import Inline from './app/components/mdx/CodeInline'
+import SubHeader from './app/components/mdx/SubHeader'
+import RefLink from './app/components/mdx/RefLink'
+import RefBlock from './app/components/mdx/RefBlock'
  
 export function getMDXComponents(components: MDXComponents): MDXComponents {
     return {
@@ -16,10 +20,14 @@ export function getMDXComponents(components: MDXComponents): MDXComponents {
             )
         },
         ...components,
+        SubHeader,
         CodeBlock,
         ErrorBlock,
         ListBlock,
         ReasonBlock,
+        Inline,
+        RefLink,
+        RefBlock,
     }
 }
 

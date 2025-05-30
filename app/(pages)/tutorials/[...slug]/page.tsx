@@ -38,14 +38,13 @@ export default async function TutorialPostPage(props: {
     })
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full mb-xl">
             <h1 className="text-lg text-[var(--foreground)]">{frontmatter.title}</h1>
             <div className="border-b-1 border-[var(--mute)] w-full my-sm" />
-
             {frontmatter.techUsed && (
                 <span className="text-xs text-[var(--foreground)]">Used in this guide:</span>
             )}
-            <div className="flex gap-xs my-sm">
+            <div className="flex flex-wrap gap-xs my-sm">
                 {frontmatter.techUsed?.map((tech) => (
                     <MainTag key={tech} name={tech} />
                 ))}

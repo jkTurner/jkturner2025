@@ -1,9 +1,242 @@
 ---
 title: "next-mdx basic"
 description: "The overview of Dev Steps Tutorials"
-date: "2025-05-26"
+date: "2025-05-30"
 author: "Jakkrit Turner"
-techUsed: ["Nodemailer 7.0.3"]
+techUsed: ["Next.js 15.3.3", "next/mdx 15.3.2", "rehype-pretty-code 0.14.1", "shiki 3.4.2", "tailwindcss-typography", "remark-gfm 4.0.1" ]
 ---
 
-<h4>comming soon</h4>
+<ReasonBlock reason="Intro" detail="In modern documentation, readability is everything — and nothing elevates developer content like beautiful, consistent syntax highlighting. If you're building a blog, tutorial platform, or documentation site in Next.js 15 using MDX, you'll quickly find that Markdown code blocks alone won’t cut it." />
+<br/>
+
+In this guide, we’ll set up a modern MDX-powered documentation or blog system in a Next.js 15 project using the App Router, enhanced with Tailwind CSS Typography for beautiful content styling and Shiki via rehype-pretty-code for syntax-highlighted code blocks.
+<br/>
+
+<ListBlock header="Why This Stack?"
+    listItems={[
+        "MDX enables JSX in Markdown for rich interactive content.",
+        "Shiki ensures your code blocks match the exact look of popular themes like Vitesse or Github Dark.",
+        "rehype-pretty-code gives you features such as line numbers, highlighted lines, and sematic HTML for better accessibility.",
+        "Next.js 15 App Router allows fine control of your rendering staretgy with RSC (React Server Components) and layouts.",
+    ]} 
+/>
+<br/>
+
+<ListBlock header="Before We Begin"
+    listItems={[
+        "The project does not use the /src folder structure.",
+        "The code examples are written in TypeScript.",
+        "I am using Tailwind CSS for styling (though not strictly required for Shiki).",
+    ]}
+/>
+<br/>
+
+Install next-mdx dependencies
+<br/>
+<CodeBlock>
+```tsx
+npm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx
+```
+</CodeBlock>
+<br/>
+
+Install rehype-pretty-code & shiki
+<br/>
+<CodeBlock>
+```tsx
+npm install rehype-pretty-code shiki
+```
+</CodeBlock>
+<br/>
+
+Install remark-gfm
+<br/>
+<CodeBlock>
+```tsx
+npm install remark-gfm
+```
+</CodeBlock>
+<br/>
+
+Install tailwindcss-typography
+<br/>
+<CodeBlock>
+```tsx
+npm install -D @tailwindcss/typography
+```
+</CodeBlock>
+<br/>
+
+First, add the Tailwind Typography plugin to your global CSS:
+<br/>
+<CodeBlock title="root/app/global.css">
+```tsx
+@import "tailwindcss/typography";
+@plugin "@tailwindcss/typography";
+```
+</CodeBlock>
+<br/>
+
+Enable MDX Support in <Inline code="next.config.ts" />. We use @next/mdx to integrate MDX with the App Router. We also add support for Markdown and code formatting plugins.
+<br/>
+<CodeBlock title="root/next.config.ts">
+```tsx
+import remarkGfm from 'remark-gfm'
+import createMDX from '@next/mdx'
+import rehypePrettyCode from 'rehype-pretty-code'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Allow .mdx extensions for files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Optionally, add any other Next.js config below
+}
+ 
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypePrettyCode],
+  },
+})
+ 
+// Combine MDX and Next.js config
+export default withMDX(nextConfig)
+```
+</CodeBlock>
+<br/>
+
+Add a useMDXComponents File. Create a file called <Inline code="mdx-components.tsx" /> in the root directory. This is a convention Next.js uses to inject custom components into MDX content globally.
+<br/>
+<CodeBlock title="root/mdx-components.tsx">
+```tsx
+import type { MDXComponents } from 'mdx/types'
+ 
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    ...components,
+  }
+}
+```
+</CodeBlock>
+<br/>
+
+ Create an .mdx Page. Inside your app directory, create a Markdown page (e.g. app/(pages)/test/page.mdx):
+<br/>
+<CodeBlock>
+```tsx
+root
+├── app
+    ├── (pages)
+        ├── page.mdx
+```
+</CodeBlock>
+<br/>
+<CodeBlock title="app/(pages)/page.mdx">
+````mdx
+# This is H1 title
+## This is H2
+
+- List item 1
+- List item 2
+- List item 3
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit a semper pellentesque elementum nascetur, volutpat ridiculus facilisi augue lobortis pharetra conubia purus eu orci dictumst, sapien sodales habitant auctor ultrices diam arcu quam aenean vivamus congue.
+```tsx
+const SomeComponent = () => {
+    return (
+        <div>
+            <h4>Some Component</h4>
+        </div>
+    )
+}
+export default SomeComponent;
+```
+````
+</CodeBlock>
+<br/>
+
+Add a Layout Wrapper with prose styling by default, Tailwind’s prose class won’t be applied to MDX content unless you explicitly wrap it. Create a layout file in the same route folder (e.g. app/(pages)/test/layout.tsx):
+
+<br/>
+<CodeBlock>
+```tsx
+root
+├── app
+    ├── (pages)
+        ├── page.mdx
+        ├── layout.tsx
+```
+</CodeBlock>
+<br/>
+
+<CodeBlock title="/app/(pages)/test/layout.tsx">
+```tsx
+export default function TestLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    return (
+        <main className="prose">{children}</main>
+    )
+}
+```
+</CodeBlock>
+<br/>
+
+You’re Done
+Now, navigating to <Inline code="http://localhost:3000/test" /> will render your .mdx content with Tailwind Typography styles applied, and code blocks will be highlighted using Shiki thanks to rehype-pretty-code.
+<br/>
+
+<SubHeader header="Change Shiki theme" />
+To customize the syntax highlighting style for your code blocks, you can specify a theme in your next.config.ts under the rehypePrettyCode plugin:
+<br/>
+<CodeBlock title="before">
+```tsx
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypePrettyCode],
+  },
+})
+```
+</CodeBlock>
+<br/>
+<CodeBlock title="after">
+```tsx
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [[rehypePrettyCode, { theme: 'houston' }]],
+  },
+})
+```
+</CodeBlock>
+
+<br/>
+Note: You can find more theme from <RefLink text="Shiki Theme" link="https://shiki.style/themes" />
+
+<br/>
+<ListBlock 
+    header="This setup is fully compatible with:"
+    listItems={[
+        "Next.js 15 App Router",
+        "Custom components injected via useMDXComponents",
+        "Markdown plugins like remark-gfm",
+        "Code highlighting themes like github-dark, vitesse-light, etc.",
+    ]} 
+/>
+
+<br/>
+
+<RefBlock refItems={[
+    "https://nextjs.org/docs/pages/guides/mdx",
+    "https://rehype-pretty.pages.dev/",
+    "https://shiki.matsu.io/guide/",
+    "https://github.com/tailwindlabs/tailwindcss-typography",
+    "https://github.com/remarkjs/remark-gfm",
+]}
+/>

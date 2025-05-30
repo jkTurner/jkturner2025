@@ -10,7 +10,7 @@ const CodeBlock = ({ title, children }: CodeBlockProps) => {
   return (
     <div className="rounded-md border border-zinc-700 overflow-hidden">
       {title && (
-        <div className="not-prose bg-zinc-800 text-white px-4 py-2 text-xxs border-b border-zinc-700">
+        <div className="not-prose tracking-widest bg-zinc-800 text-white px-4 py-2 text-micro border-b border-zinc-700">
           {title}
         </div>
       )}
