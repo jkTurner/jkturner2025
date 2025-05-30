@@ -5,17 +5,28 @@ interface ReasonBlockProps {
 
 const ReasonBlock = ({ reason = "Reason:", detail }: ReasonBlockProps) => {
     return (
-        <div className="flex flex-col gap-sm">
-        <h2 className="text-[var(--foreground)] font-medium">{reason}</h2>
-        <div className="flex gap-sm">
-            <div className="h-auto w-[8px] bg-[var(--accent)]" />
-            <div className="w-full">
-                <p>
-                    {detail}
-                </p>
+        <section 
+            className="flex flex-col gap-sm mb-md"
+            itemScope
+            itemType="https://schema.org/WebPageElement"
+        >
+            <meta itemProp="name" content={reason} />
+
+            <h2 
+                className="text-[var(--foreground)] font-medium"
+                itemProp="headline"
+                >{reason}</h2>
+
+            <div className="flex gap-sm">
+                <div className="h-auto w-[8px] bg-[var(--accent)]" />
+                <div className="w-full">
+                    <p itemProp="description">
+                        {detail}
+                    </p>
+                </div>
             </div>
-        </div>
-        </div>
+
+        </section>
     )
 }
 

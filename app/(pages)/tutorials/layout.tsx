@@ -4,7 +4,10 @@ import { Metadata } from "next";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-    title: "Tutorials | JKTurner",
+	title: {
+		template: '%s | Jakkrit Turne',
+		default: 'Tutorials',
+	},
     description: "Coming soon",
 }
 
